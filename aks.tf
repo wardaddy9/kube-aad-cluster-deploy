@@ -1,8 +1,10 @@
+# Creating a resource group
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
   location = var.location
 }
 
+# Creating a AKS service within the rg resource group we are creating above
 resource "azurerm_kubernetes_cluster" "aks" {
   name                   = var.cluster_name
   kubernetes_version     = var.kubernetes_version
@@ -21,6 +23,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
     type = "SystemAssigned"
   }
 
+#This cluster is secured using Azure Airbag
+#We are creating the AAD inside the file service_princip.tf that we are using here as admin for the group we are creating above
   azure_active_directory_role_based_access_control {
     managed                = true
     azure_rbac_enabled     = true
