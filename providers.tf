@@ -1,3 +1,4 @@
+#Provider will wait until the AKS cluster is created cuz we are referencing that cluster in the provider for Kubernetes block below
 terraform {
   required_version = ">= 1.2.2"
   required_providers {
@@ -22,7 +23,7 @@ provider "kubernetes" {
   host                   = azurerm_kubernetes_cluster.aks.kube_config.0.host
   cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.cluster_ca_certificate)
 
-  # using kubelogin to get an AAD token for the cluster.
+  # using kubelogin within exec provisioner to get an AAD token for the cluster.
   exec {
     api_version = "client.authentication.k8s.io/v1beta1"
     command     = "kubelogin"
